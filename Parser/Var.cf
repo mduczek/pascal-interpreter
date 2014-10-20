@@ -1,0 +1,82 @@
+entrypoints Program ;
+comment "(*" "*)" ;
+
+
+Prog. Program  ::= "program" Ident ";" RecBlock DecBlock [Function] "begin" [Stm] "end" ".";
+Fun.  Function ::= "function" Ident "(" [Decl] ")" ":" ReturnType ";" DecBlock [Function] "begin" [Stm] "end" ";" ;
+
+RecBlockJust.	RecBlock ::= "type" [Record] ;
+RecBlockEmpty.	RecBlock ::= ;
+Rec.			Record ::= Ident "=" "record" [Decl] "end" ";" ;
+terminator Record "" ;
+
+DecBlockJust.   DecBlock ::= "var" [Decl] ;
+DecBlockEmpty.  DecBlock ::= ;
+Dec.            Decl  ::= [Ident] ":" Type;
+
+separator  nonempty Ident "," ;
+separator  Decl ";" ;
+terminator  Stm "" ;
+terminator  Function "" ;
+
+VarSimple.      Var ::= Ident ;
+VarIndexed.     Var ::= Var "[" Exp "]" ;
+VarFieldAccess.  Var ::= Var "." Ident ;
+separator nonempty Var ";" ;
+
+SComp.    Stm ::= "begin" [Stm] "end" ";" ;
+SExp.     Stm ::= Exp ";" ;
+SWhile.   Stm ::= "while" Exp "do" Stm ;
+SFor.     Stm ::= "for" Exp ";" Exp ";" Exp "do" Stm ;
+SIt.	  Stm ::= "if" Exp "then" Stm [Elif] "endif" ;
+SIte. 	  Stm ::= "if" Exp "then" Stm [Elif] "else" Stm "endif" ;
+SLength.  Stm ::= Ident "length" Exp ";" ;
+
+Eliff.  Elif ::= "elif" Exp "then" Stm;
+separator Elif "" ;
+
+RetType.  ReturnType ::= Type ;
+Void.     ReturnType ::= "void" ;
+
+TTuple.   Type ::= "(" Type "," [Type] ")" ;
+TBool.    Type ::= "bool" ;
+TInt.     Type ::= "int" ;
+TString.  Type ::= "string" ;
+TArray.   Type ::= "array" "<" Type ">";
+TMap.     Type ::= "map" "<" Type "," Type ">" ;
+TRecord.  Type ::= Ident ;
+TWildcard. Type ::= "?" ;
+separator nonempty Type "," ;
+
+ATuple.  Assignable ::= "(" Var ";" [Var] ")" ;
+AVar.    Assignable ::= Var ;
+
+EAss.    Exp  ::= Assignable "=" Exp ;
+Eor.	 Exp1 ::= Exp1 "or" Exp2 ;
+Eand.	 Exp2 ::= Exp2 "and" Exp3 ;
+Eeq.	 Exp3 ::= Exp3 "=="  Exp4 ;
+Eneq.	 Exp3 ::= Exp3 "<>" Exp4 ;
+Elt.	 Exp4 ::= Exp4 "<"  Exp5 ;
+Elte.	 Exp4 ::= Exp4 "<=" Exp5 ;
+Egt.	 Exp4 ::= Exp4 ">"  Exp5 ;
+Egte.	 Exp4 ::= Exp4 ">=" Exp5 ;
+
+EConcat. Exp5 ::= Exp5 "++" Exp6 ;
+EAdd.    Exp5 ::= Exp5 "+" Exp6 ;
+ESub.    Exp5 ::= Exp5 "-" Exp6 ;
+EMul.    Exp6 ::= Exp6 "*" Exp7 ;
+EDiv.    Exp6 ::= Exp6 "/" Exp7 ;
+Call.    Exp7 ::= Ident "(" [Exp] ")" ;
+ETuple.  Exp7 ::= "(" Exp "," [Exp] ")" ;
+EBNeg.	 Exp7 ::= "!" Exp8 ;
+EMinus.   Exp7 ::= "-" Exp8 ;
+ECast.	 Exp7 ::= "say" Exp "is" Type ;
+EVar.    Exp8 ::= Var ;
+EInt.    Exp8 ::= Integer ;
+Etrue.	 Exp8 ::= "true" ;
+Efalse.	 Exp8 ::= "false" ;
+EStr.    Exp8 ::= String ;
+
+coercions Exp 8 ;
+separator Exp "," ;
+

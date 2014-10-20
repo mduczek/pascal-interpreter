@@ -1,0 +1,13 @@
+program exFunction;
+var
+   a : int;
+   b : array<bool>;
+   t : (int, bool);
+begin
+   b length 1;
+   print(t);
+   t = (5, true);
+   (a; b[1]) = t;
+   print(a);
+   print(b);
+end.

@@ -1,0 +1,50 @@
+program exFunction;
+
+var
+   a : array<int>;
+   b : array<int>;
+
+function f (a1,a2:array<?>) : array<bool>;
+	var i:int;
+		l:int;
+	begin
+		l = min(len(a1), len(a2));
+		f length l;
+		for i=1; i <= l; i = i+1 do
+			f[i] = a1[i] == a2[i];
+	end;
+
+function min (a, b:int) : int;
+	begin
+		if a < b then
+			min = a;
+		else
+			min = b;
+		endif
+	end;
+
+function take_even(a:array<?>) : array<?>;
+	var i:int;
+		l:int;
+	begin
+		l = len(a);
+		take_even length l/2;
+		for i=2; i<=len(a); i=i+2 do
+			take_even[i/2] = a[i];
+	end;
+
+begin
+	a length 3;
+	b length 3;
+	a[1] = 1;
+	a[2] = 2;
+	a[3] = 3;
+	b[1] = 1;
+	b[2] = 0;
+	b[3] = 3;
+   	print(f(a,b));
+   	
+   	b = say take_even(a) is array<int>;
+
+   	print(b);
+end.

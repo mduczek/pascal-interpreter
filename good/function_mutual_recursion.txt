@@ -1,0 +1,29 @@
+program exFunction;
+
+function f () : void;
+	var
+   		a : int;
+	function h () : void;
+		begin
+			print(a = a-2);
+			if a > 0 then
+				g();
+			endif
+		end;
+
+	function g () : void;
+		begin
+			print(a = a-1);
+			if a > 0 then
+				h();
+			endif
+		end;
+
+	begin
+		a = 10;
+		g();
+	end;
+	
+begin
+	f();
+end.
